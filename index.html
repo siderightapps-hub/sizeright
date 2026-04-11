@@ -3,723 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Futures Position Size Calculator — NQ, ES, MNQ, MES, Gold, Oil</title>
-<meta name="description" content="Free futures position size calculator for NQ, ES, MNQ, MES, Gold (GC), and Crude Oil (CL). Enter account size, risk %, and stop distance to get exact contract counts instantly.">
-<meta name="keywords" content="futures position size calculator, NQ position size, ES position size, risk calculator, futures trading, MNQ MES calculator">
+<title>Futures Position Size Calculator — NQ, ES, MNQ, MES, Gold, Oil | SizeRight</title>
+<meta name="description" content="Free futures position size calculator for micro and full-size futures contracts. NQ, ES, MNQ, MES, Gold, Crude Oil, Russell 2000 and more. Enter account size, risk %, and stop distance to get exact contract counts instantly.">
+<meta name="keywords" content="futures position size calculator, NQ position size, ES position size, micro futures calculator, MNQ MES calculator, funded trader calculator, risk calculator, futures trading">
+<meta name="author" content="SizeRight">
+<link rel="canonical" href="https://siderightapps.com">
+<meta property="og:title" content="Futures Position Size Calculator — SizeRight">
+<meta property="og:description" content="Free instant position size calculator for micro and full-size futures. Know your exact contract count before every trade.">
+<meta property="og:url" content="https://siderightapps.com">
+<meta property="og:type" content="website">
 
-<!-- Google AdSense placeholder — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<!-- Google AdSense — replace ca-pub-XXXXXXXXXXXXXXXX with your publisher ID once approved -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#0d0d0d;--surface:#141414;--surface2:#1a1a1a;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --text:#f0ede8;--muted:#888;--accent:#c8f03a;--accent-text:#0d0d0d;--red:#ff5a3c;
+  --radius:10px;--font-mono:'DM Mono',monospace;--font-serif:'Instrument Serif',serif;--font-sans:'DM Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px;line-height:1.6;min-height:100vh;padding:0 0 80px;}
+header{border-bottom:1px solid var(--border);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto;}
+.logo{display:flex;flex-direction:column;gap:1px;}
+.logo-word{font-family:var(--font-serif);font-style:italic;font-size:22px;color:var(--text);letter-spacing:-0.02em;}
+.logo-sub{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.pro-badge{font-family:var(--font-mono);font-size:10px;background:var(--accent);color:var(--accent-text);padding:3px 8px;border-radius:4px;font-weight:500;letter-spacing:0.06em;cursor:pointer;text-decoration:none;}
+main{max-width:960px;margin:0 auto;padding:28px 24px 0;}
+.page-title{font-family:var(--font-serif);font-style:italic;font-size:36px;letter-spacing:-0.02em;margin-bottom:4px;}
+.page-sub{color:var(--muted);font-size:13px;margin-bottom:24px;font-family:var(--font-mono);letter-spacing:0.02em;}
 
-  :root {
-    --bg: #0d0d0d;
-    --surface: #141414;
-    --surface2: #1a1a1a;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0ede8;
-    --muted: #888;
-    --accent: #c8f03a;
-    --accent-dim: rgba(200,240,58,0.12);
-    --accent-text: #0d0d0d;
-    --red: #ff5a3c;
-    --red-dim: rgba(255,90,60,0.12);
-    --blue: #4a9eff;
-    --blue-dim: rgba(74,158,255,0.1);
-    --gold: #f0b429;
-    --gold-dim: rgba(240,180,41,0.1);
-    --radius: 10px;
-    --font-mono: 'DM Mono', monospace;
-    --font-serif: 'Instrument Serif', serif;
-    --font-sans: 'DM Sans', sans-serif;
-  }
+/* DISCLAIMER */
+.disclaimer{display:flex;gap:12px;align-items:flex-start;background:rgba(255,90,60,0.08);border:1px solid rgba(255,90,60,0.35);border-radius:var(--radius);padding:14px 16px;margin-bottom:24px;}
+.disclaimer-icon{font-size:18px;color:var(--red);flex-shrink:0;margin-top:1px;}
+.disclaimer-title{font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--red);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;}
+.disclaimer-body{font-size:13px;color:#ffaa99;line-height:1.6;}
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.6;
-    min-height: 100vh;
-    padding: 0 0 80px;
-  }
+/* TABS */
+.tabs-wrap{margin-bottom:20px;}
+.tier-label{font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.tier-label.free{color:#c8f03a;}
+.tier-label.pro{color:#4a9eff;}
+.tier-label.pro .lock{font-size:11px;}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+.tab{font-family:var(--font-mono);font-size:12px;padding:6px 14px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.04em;}
+.tab:hover{color:var(--text);}
+.tab.active{background:var(--accent);color:var(--accent-text);border-color:var(--accent);font-weight:500;}
+.tab.pro-locked{opacity:0.45;border-style:dashed;border-color:rgba(74,158,255,0.4);color:rgba(74,158,255,0.7);}
+.tab.pro-locked:hover{opacity:0.7;}
 
-  /* ── HEADER ── */
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .logo {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .logo-word {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 22px;
-    color: var(--text);
-    letter-spacing: -0.02em;
-  }
-  .logo-sub {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .pro-badge {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    background: var(--accent);
-    color: var(--accent-text);
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-    text-decoration: none;
-    display: none;
-  }
-  .pro-badge.visible { display: inline-block; }
+/* INSTRUMENT INFO */
+.instrument-info{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;display:flex;flex-wrap:wrap;gap:20px;margin-bottom:20px;font-family:var(--font-mono);font-size:11px;}
+.info-item{display:flex;flex-direction:column;gap:2px;}
+.info-key{color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;}
+.info-val{color:var(--text);font-size:13px;}
+.info-val.accent{color:var(--accent);}
 
-  /* ── AD BANNER ── */
-  .ad-banner {
-    max-width: 900px;
-    margin: 16px auto 0;
-    padding: 0 24px;
-  }
-  .ad-slot {
-    background: var(--surface);
-    border: 1px dashed var(--border2);
-    border-radius: var(--radius);
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-  }
+/* INPUTS */
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:540px){.calc-grid{grid-template-columns:1fr;}}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field-label-row{display:flex;align-items:center;justify-content:space-between;}
+.field label{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;}
+.field-wrap{position:relative;display:flex;align-items:center;}
+.prefix{position:absolute;left:12px;font-family:var(--font-mono);font-size:13px;color:var(--muted);pointer-events:none;}
+.suffix{position:absolute;right:12px;font-family:var(--font-mono);font-size:13px;color:var(--muted);pointer-events:none;}
+input[type="number"]{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:16px;padding:12px 16px;outline:none;transition:border-color 0.15s;-moz-appearance:textfield;appearance:textfield;}
+input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none;}
+input[type="number"]:focus{border-color:var(--accent);}
+.prefix~input{padding-left:28px;}
+input.has-suffix{padding-right:32px;}
+.tick-info-btn{width:18px;height:18px;border-radius:50%;border:1px solid var(--muted);background:transparent;color:var(--muted);font-family:var(--font-mono);font-size:11px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.tick-info-btn:hover{border-color:var(--accent);color:var(--accent);}
+.stop-hint{font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:4px;}
 
-  /* ── MAIN LAYOUT ── */
-  main {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 32px 24px 0;
-  }
+/* RESULT */
+.result-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:4px;display:flex;flex-direction:column;gap:16px;transition:border-color 0.2s;}
+.result-card.valid{border-color:rgba(200,240,58,0.3);}
+.result-card.danger{border-color:rgba(255,90,60,0.3);}
+.result-primary{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+.result-number{font-family:var(--font-mono);font-size:52px;font-weight:500;color:var(--accent);letter-spacing:-0.03em;line-height:1;}
+.result-number.danger{color:var(--red);}
+.result-unit{font-family:var(--font-mono);font-size:16px;color:var(--muted);}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:480px){.result-grid{grid-template-columns:repeat(2,1fr);}}
+.stat{display:flex;flex-direction:column;gap:2px;}
+.stat-key{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;}
+.stat-val{font-family:var(--font-mono);font-size:14px;color:var(--text);}
+.warning-text{font-family:var(--font-mono);font-size:11px;color:var(--red);display:none;}
+.warning-text.show{display:block;}
 
-  .page-title {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 36px;
-    color: var(--text);
-    letter-spacing: -0.02em;
-    margin-bottom: 4px;
-  }
-  .page-sub {
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 32px;
-    font-family: var(--font-mono);
-    letter-spacing: 0.02em;
-  }
+.section-divider{border:none;border-top:1px solid var(--border);margin:28px 0;}
 
-  /* ── INSTRUMENT TABS ── */
-  .tabs-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 28px;
-  }
-  .tab {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    padding: 6px 14px;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 0.04em;
-  }
-  .tab:hover { border-color: var(--border2); color: var(--text); }
-  .tab.active {
-    background: var(--accent);
-    color: var(--accent-text);
-    border-color: var(--accent);
-    font-weight: 500;
-  }
-  .tab.pro-locked {
-    opacity: 0.4;
-    border-style: dashed;
-    cursor: pointer;
-    position: relative;
-  }
+/* PRO UPSELL */
+.pro-upsell{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.pro-upsell-left h3{font-family:var(--font-serif);font-style:italic;font-size:20px;margin-bottom:4px;}
+.pro-upsell-left p{font-size:13px;color:var(--muted);max-width:460px;line-height:1.5;}
+.pro-instruments{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.pro-pill{font-family:var(--font-mono);font-size:11px;padding:3px 8px;border:1px solid var(--border2);border-radius:4px;color:var(--muted);}
+.pro-pill.anchor{border-color:rgba(74,158,255,0.4);color:rgba(74,158,255,0.85);}
+.btn-pro{flex-shrink:0;background:var(--accent);color:var(--accent-text);border:none;border-radius:var(--radius);padding:12px 24px;font-family:var(--font-mono);font-size:13px;font-weight:500;cursor:pointer;text-decoration:none;display:inline-block;transition:opacity 0.15s;}
+.btn-pro:hover{opacity:0.85;}
 
-  /* ── INSTRUMENT INFO BAR ── */
-  .instrument-info {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin-bottom: 24px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-  }
-  .info-item { display: flex; flex-direction: column; gap: 2px; }
-  .info-key { color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
-  .info-val { color: var(--text); font-size: 13px; }
-  .info-val.accent { color: var(--accent); }
+/* EXPLAINER */
+.explainer{margin-top:32px;}
+.explainer h2{font-family:var(--font-serif);font-style:italic;font-size:26px;margin-bottom:12px;letter-spacing:-0.01em;}
+.explainer p{font-size:14px;color:#aaa;line-height:1.8;max-width:680px;margin-bottom:12px;}
+.formula-box{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;font-family:var(--font-mono);font-size:13px;color:var(--text);margin:16px 0;line-height:2;}
+.spec-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:13px;margin:16px 0;overflow-x:auto;display:block;}
+.spec-table th{text-align:left;padding:8px 10px;color:var(--muted);font-size:10px;letter-spacing:0.06em;border-bottom:1px solid var(--border2);white-space:nowrap;}
+.spec-table td{padding:7px 10px;border-bottom:1px solid var(--border);white-space:nowrap;}
+.spec-table td.accent{color:var(--accent);}
+.spec-table td.muted{color:var(--muted);}
 
-  /* ── CALCULATOR GRID ── */
-  .calc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  @media (max-width: 540px) { .calc-grid { grid-template-columns: 1fr; } }
+/* MODALS */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:28px;width:100%;}
+.modal-box.tick{max-width:500px;}
+.modal-box.pro{max-width:440px;}
+.modal-box h3{font-size:18px;font-weight:500;color:var(--text);margin-bottom:12px;}
+.modal-box h2{font-family:var(--font-serif);font-style:italic;font-size:26px;margin-bottom:6px;}
+.modal-box p{font-size:13px;color:#bbb;line-height:1.7;margin-bottom:12px;}
+.hl{color:var(--accent);font-family:var(--font-mono);}
+.tick-table{width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:12px;margin-bottom:14px;}
+.tick-table th{text-align:left;color:var(--muted);font-size:10px;letter-spacing:0.06em;padding:6px 10px;border-bottom:1px solid var(--border2);}
+.tick-table td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text);}
+.tick-table td.accent{color:var(--accent);}
+.modal-note{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.modal-close-btn{width:100%;background:var(--accent);color:var(--accent-text);border:none;border-radius:var(--radius);padding:12px;font-family:var(--font-mono);font-size:13px;font-weight:500;cursor:pointer;}
+.modal-features{list-style:none;margin-bottom:24px;}
+.modal-features li{font-family:var(--font-mono);font-size:13px;padding:8px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;color:var(--text);}
+.modal-features li::before{content:'→';color:var(--accent);}
+.modal-price{font-family:var(--font-mono);font-size:32px;font-weight:500;color:var(--accent);margin-bottom:4px;}
+.modal-price-note{font-size:12px;color:var(--muted);margin-bottom:20px!important;}
+.modal-dismiss{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:var(--font-mono);margin-top:12px;padding:0;}
+.modal-dismiss:hover{color:var(--text);}
+.btn-row{display:flex;flex-direction:column;gap:10px;}
+.unlock-row{display:flex;gap:8px;margin-top:12px;}
+.unlock-input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:13px;padding:10px 14px;outline:none;}
+.unlock-input:focus{border-color:var(--accent);}
+.btn-unlock{background:var(--surface2);color:var(--text);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-family:var(--font-mono);font-size:12px;cursor:pointer;}
+.btn-unlock:hover{border-color:var(--accent);color:var(--accent);}
+.unlock-msg{font-family:var(--font-mono);font-size:11px;color:var(--red);margin-top:6px;}
+.unlock-msg.ok{color:var(--accent);}
 
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .field label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .field-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  .field-wrap .prefix {
-    position: absolute;
-    left: 12px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-    pointer-events: none;
-  }
-  .field-wrap .suffix {
-    position: absolute;
-    right: 12px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-    pointer-events: none;
-  }
-  input[type="number"] {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 16px;
-    padding: 12px 16px;
-    outline: none;
-    transition: border-color 0.15s;
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
-  input[type="number"]::-webkit-inner-spin-button,
-  input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-  input[type="number"]:focus { border-color: var(--accent); }
-  .prefix ~ input { padding-left: 28px; }
-  .suffix ~ input, input.has-suffix { padding-right: 32px; }
-
-  /* ── RESULT CARD ── */
-  .result-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 20px;
-    margin-top: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    transition: border-color 0.2s;
-  }
-  .result-card.valid { border-color: rgba(200,240,58,0.3); }
-  .result-card.danger { border-color: rgba(255,90,60,0.3); }
-
-  .result-primary {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .result-number {
-    font-family: var(--font-mono);
-    font-size: 52px;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-  .result-number.danger { color: var(--red); }
-  .result-unit {
-    font-family: var(--font-mono);
-    font-size: 16px;
-    color: var(--muted);
-  }
-
-  .result-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-  @media (max-width: 480px) { .result-grid { grid-template-columns: repeat(2, 1fr); } }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .stat-key {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .stat-val {
-    font-family: var(--font-mono);
-    font-size: 14px;
-    color: var(--text);
-  }
-
-  .warning-text {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--red);
-    letter-spacing: 0.04em;
-    display: none;
-  }
-  .warning-text.show { display: block; }
-
-  /* ── DIVIDER ── */
-  .section-divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 28px 0;
-  }
-
-  /* ── PRO UPSELL ── */
-  .pro-upsell {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  .pro-upsell-left h3 {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 20px;
-    margin-bottom: 4px;
-  }
-  .pro-upsell-left p {
-    font-size: 13px;
-    color: var(--muted);
-    max-width: 400px;
-    line-height: 1.5;
-  }
-  .pro-instruments {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 10px;
-  }
-  .pro-pill {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    padding: 3px 8px;
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-  .btn-pro {
-    flex-shrink: 0;
-    background: var(--accent);
-    color: var(--accent-text);
-    border: none;
-    border-radius: var(--radius);
-    padding: 12px 24px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    display: inline-block;
-    transition: opacity 0.15s;
-  }
-  .btn-pro:hover { opacity: 0.85; }
-
-  /* ── EXPLAINER ── */
-  .explainer {
-    margin-top: 32px;
-  }
-  .explainer h2 {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 26px;
-    margin-bottom: 12px;
-    letter-spacing: -0.01em;
-  }
-  .explainer p {
-    font-size: 14px;
-    color: #aaa;
-    line-height: 1.8;
-    max-width: 660px;
-    margin-bottom: 12px;
-  }
-  .formula-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 0 var(--radius) var(--radius) 0;
-    padding: 14px 18px;
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--text);
-    margin: 16px 0;
-    line-height: 2;
-  }
-
-  /* ── AD MID ── */
-  .ad-mid {
-    margin: 32px 0;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    max-width: 900px;
-    margin: 40px auto 0;
-    padding: 20px 24px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  footer p {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-
-  /* ── PRO MODAL ── */
-  .modal-backdrop {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-backdrop.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border: 1px solid var(--border2);
-    border-radius: 14px;
-    padding: 32px;
-    max-width: 440px;
-    width: 100%;
-  }
-  .modal h2 {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 26px;
-    margin-bottom: 6px;
-  }
-  .modal p { font-size: 14px; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
-  .modal-features { list-style: none; margin-bottom: 24px; }
-  .modal-features li {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text);
-  }
-  .modal-features li::before { content: '→'; color: var(--accent); }
-  .modal-price {
-    font-family: var(--font-mono);
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .modal-price-note { font-size: 12px; color: var(--muted); margin-bottom: 20px !important; }
-  .modal-close {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-size: 13px;
-    cursor: pointer;
-    font-family: var(--font-mono);
-    letter-spacing: 0.04em;
-    margin-top: 12px;
-    padding: 0;
-  }
-  .modal-close:hover { color: var(--text); }
-  .btn-row { display: flex; flex-direction: column; gap: 10px; }
-
-  /* ── PRO UNLOCK INPUT ── */
-  .unlock-row {
-    display: flex;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .unlock-input {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: 13px;
-    padding: 10px 14px;
-    outline: none;
-  }
-  .unlock-input:focus { border-color: var(--accent); }
-  .btn-unlock {
-    background: var(--surface2);
-    color: var(--text);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius);
-    padding: 10px 16px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    cursor: pointer;
-    letter-spacing: 0.04em;
-  }
-  .btn-unlock:hover { border-color: var(--accent); color: var(--accent); }
-  .unlock-msg { font-family: var(--font-mono); font-size: 11px; color: var(--red); margin-top: 6px; }
-  .unlock-msg.ok { color: var(--accent); }
+footer{max-width:960px;margin:40px auto 0;padding:20px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+footer p{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
   <div class="logo">
     <span class="logo-word">SizeRight</span>
     <span class="logo-sub">Futures Position Calculator</span>
   </div>
-  <a class="pro-badge visible" href="#" id="headerProBtn">Unlock Pro →</a>
+  <a class="pro-badge" href="#" id="headerProBtn">Unlock Pro →</a>
 </header>
 
-<!-- ── TOP AD ── -->
-<div class="ad-banner">
-  <!-- AdSense leaderboard — replace with your ad unit code -->
-  <ins class="adsbygoogle ad-slot" style="display:block"
-    data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-    data-ad-slot="XXXXXXXXXX"
-    data-ad-format="auto"
-    data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
-
-<!-- ── MAIN ── -->
 <main>
   <h1 class="page-title">Position size calculator</h1>
-  <p class="page-sub">Free · Instant · No login — for NQ, ES, micro, Gold &amp; Oil</p>
+  <p class="page-sub">Free for all micro contracts · Pro unlocks full-size &amp; 20 instruments</p>
 
-  <!-- INSTRUMENT TABS -->
-  <div class="tabs-label">Select instrument</div>
-  <div class="tabs" id="tabs"></div>
+  <div class="disclaimer">
+    <span class="disclaimer-icon">⚠</span>
+    <div>
+      <div class="disclaimer-title">Risk warning</div>
+      <div class="disclaimer-body">Futures trading carries a high level of risk and may not be suitable for all investors. You can lose more than your initial deposit. This tool is for position sizing reference only — it is <strong>not financial advice</strong>. Always verify contract specifications with your broker before placing any trade.</div>
+    </div>
+  </div>
 
-  <!-- INSTRUMENT INFO -->
+  <!-- AdSense top — uncomment once approved
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+
+  <div class="tabs-wrap">
+    <div class="tier-label free">Free — micro contracts</div>
+    <div class="tabs" id="freeTabs"></div>
+    <div class="tier-label pro"><span class="lock">🔒</span> Pro — full-size &amp; more</div>
+    <div class="tabs" id="proTabs"></div>
+  </div>
+
   <div class="instrument-info" id="instrInfo"></div>
 
-  <!-- INPUTS -->
   <div class="calc-grid">
     <div class="field">
       <label for="accountSize">Account size</label>
       <div class="field-wrap">
         <span class="prefix">$</span>
-        <input type="number" id="accountSize" value="25000" min="0" step="1000" placeholder="25000">
+        <input type="number" id="accountSize" value="25000" min="0" step="1000">
       </div>
     </div>
     <div class="field">
       <label for="riskPct">Risk per trade</label>
       <div class="field-wrap">
-        <input type="number" id="riskPct" value="1" min="0.1" max="10" step="0.1" placeholder="1" class="has-suffix">
+        <input type="number" id="riskPct" value="1" min="0.1" max="10" step="0.1" class="has-suffix">
         <span class="suffix">%</span>
       </div>
     </div>
-    <div class="field">
-      <label for="stopTicks" id="stopLabel">Stop distance (ticks)</label>
-      <div class="field-wrap">
-        <input type="number" id="stopTicks" value="10" min="1" step="1" placeholder="10">
+    <div class="field" style="grid-column:1/-1;">
+      <div class="field-label-row">
+        <label for="stopTicks">Stop distance (ticks)</label>
+        <button class="tick-info-btn" id="tickInfoBtn" title="What is a tick?">?</button>
       </div>
-    </div>
-    <div class="field">
-      <label for="stopPoints">Stop distance (points)</label>
       <div class="field-wrap">
-        <input type="number" id="stopPoints" value="" min="0" step="0.25" placeholder="auto">
+        <input type="number" id="stopTicks" value="10" min="1" step="1">
       </div>
+      <div class="stop-hint" id="stopHint"></div>
     </div>
   </div>
 
-  <!-- RESULT -->
   <div class="result-card" id="resultCard">
     <div class="result-primary">
       <span class="result-number" id="resultContracts">—</span>
       <span class="result-unit" id="resultUnit">contracts</span>
     </div>
     <div class="result-grid">
-      <div class="stat">
-        <span class="stat-key">$ at risk</span>
-        <span class="stat-val" id="statRisk">—</span>
-      </div>
-      <div class="stat">
-        <span class="stat-key">$ per tick</span>
-        <span class="stat-val" id="statTickVal">—</span>
-      </div>
-      <div class="stat">
-        <span class="stat-key">Stop in $</span>
-        <span class="stat-val" id="statStopDollar">—</span>
-      </div>
-      <div class="stat">
-        <span class="stat-key">Max contracts</span>
-        <span class="stat-val" id="statMax">—</span>
-      </div>
-      <div class="stat">
-        <span class="stat-key">Tick size</span>
-        <span class="stat-val" id="statTick">—</span>
-      </div>
-      <div class="stat">
-        <span class="stat-key">Point value</span>
-        <span class="stat-val" id="statPoint">—</span>
-      </div>
+      <div class="stat"><span class="stat-key">$ at risk</span><span class="stat-val" id="statRisk">—</span></div>
+      <div class="stat"><span class="stat-key">$ per tick</span><span class="stat-val" id="statTickVal">—</span></div>
+      <div class="stat"><span class="stat-key">Stop cost</span><span class="stat-val" id="statStopDollar">—</span></div>
+      <div class="stat"><span class="stat-key">Stop in points</span><span class="stat-val" id="statStopPts">—</span></div>
+      <div class="stat"><span class="stat-key">Tick size</span><span class="stat-val" id="statTick">—</span></div>
+      <div class="stat"><span class="stat-key">Point value</span><span class="stat-val" id="statPoint">—</span></div>
     </div>
     <span class="warning-text" id="warningText"></span>
   </div>
 
   <hr class="section-divider">
 
-  <!-- PRO UPSELL -->
   <div class="pro-upsell" id="proUpsell">
     <div class="pro-upsell-left">
-      <h3>Unlock Pro — more instruments</h3>
-      <p>One-time payment. No subscription, no login. Add support for 10+ more futures markets:</p>
+      <h3>Unlock Pro — 20 instruments</h3>
+      <p>One-time payment. No subscription. Unlocks all full-size contracts plus FX, bonds, soft commodities and more:</p>
       <div class="pro-instruments">
+        <span class="pro-pill anchor">NQ — E-mini Nasdaq</span>
+        <span class="pro-pill anchor">ES — E-mini S&amp;P</span>
+        <span class="pro-pill anchor">RTY — Russell 2000</span>
+        <span class="pro-pill anchor">GC — Gold</span>
+        <span class="pro-pill anchor">CL — Crude Oil</span>
+        <span class="pro-pill">YM — Dow</span>
+        <span class="pro-pill">BTC — Bitcoin</span>
+        <span class="pro-pill">SI — Silver</span>
         <span class="pro-pill">6E — Euro FX</span>
+        <span class="pro-pill">6B — British Pound</span>
+        <span class="pro-pill">6J — Japanese Yen</span>
         <span class="pro-pill">ZB — T-Bond</span>
         <span class="pro-pill">ZN — 10-Yr Note</span>
-        <span class="pro-pill">SI — Silver</span>
+        <span class="pro-pill">ZF — 5-Yr Note</span>
         <span class="pro-pill">HG — Copper</span>
         <span class="pro-pill">NG — Nat Gas</span>
         <span class="pro-pill">ZC — Corn</span>
         <span class="pro-pill">ZW — Wheat</span>
-        <span class="pro-pill">BTC — Bitcoin</span>
-        <span class="pro-pill">RTY — Russell 2k</span>
-        <span class="pro-pill">YM — Dow</span>
-        <span class="pro-pill">+ your custom contract</span>
+        <span class="pro-pill">ZS — Soybeans</span>
+        <span class="pro-pill">PA — Palladium</span>
       </div>
     </div>
-    <!-- Replace href with your Gumroad product link -->
-    <a class="btn-pro" href="https://gumroad.com/l/YOUR-PRODUCT-LINK" target="_blank" id="buyProBtn">Unlock for $9 →</a>
+    <a class="btn-pro" href="https://gumroad.com/l/YOUR-PRODUCT-LINK" target="_blank">Unlock for $9 →</a>
   </div>
 
-  <!-- MID AD -->
-  <div class="ad-mid">
-    <ins class="adsbygoogle ad-slot" style="display:block"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="XXXXXXXXXX"
-      data-ad-format="auto"
-      data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- AdSense mid — uncomment once approved
+  <ins class="adsbygoogle" style="display:block;margin-top:24px;" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
 
-  <!-- EXPLAINER (good for SEO) -->
   <div class="explainer">
     <h2>How the calculation works</h2>
-    <p>Risk management is the single most important skill in futures trading. This calculator uses a straightforward formula to tell you exactly how many contracts you can trade without exceeding your defined risk on any single trade.</p>
-
+    <p>Risk management is the single most important skill in futures trading. This calculator tells you exactly how many contracts to trade without exceeding your defined risk per trade.</p>
     <div class="formula-box">
       Dollar risk = Account size × Risk %<br>
-      Stop cost = Ticks × Tick value<br>
-      <strong style="color:var(--accent)">Contracts = floor( Dollar risk ÷ Stop cost )</strong>
+      Stop cost&nbsp;&nbsp;= Ticks × Tick value<br>
+      <strong style="color:var(--accent)">Contracts&nbsp;&nbsp;= floor( Dollar risk ÷ Stop cost )</strong>
     </div>
-
-    <p>For example, with a $25,000 account risking 1% on NQ with a 10-tick stop:</p>
+    <p>Example: $25,000 account, 1% risk, 10-tick stop on MNQ:</p>
     <div class="formula-box">
       Dollar risk = $25,000 × 1% = <strong style="color:var(--accent)">$250</strong><br>
-      Stop cost = 10 × $5 = <strong style="color:var(--accent)">$50 per contract</strong><br>
-      Contracts = floor( 250 ÷ 50 ) = <strong style="color:var(--accent)">5 contracts</strong>
+      Stop cost&nbsp;&nbsp;= 10 × $0.50 = <strong style="color:var(--accent)">$5 per contract</strong><br>
+      Contracts&nbsp;&nbsp;= floor( 250 ÷ 5 ) = <strong style="color:var(--accent)">50 contracts</strong>
     </div>
+    <p>Always round down — never up. Oversizing is how accounts blow up.</p>
 
-    <p>Always round <em>down</em> — never up. Taking on more contracts than your risk allows is how accounts blow up.</p>
-
-    <h2 style="margin-top:28px;">Contract specs used in this calculator</h2>
-    <p>All specs reflect current CME Group standard contract sizes. Tick values are fixed and do not change with price.</p>
+    <h2 style="margin-top:32px;">Free contract specifications</h2>
+    <p>All micro contracts — perfect for funded account challenges and small accounts. Tick values are fixed by CME Group and never change.</p>
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Contract</th><th>Full name</th><th>Tick size</th><th>$ per tick</th><th>Exchange</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>MNQ</td><td class="muted">Micro Nasdaq-100</td><td>0.25 pts</td><td class="accent">$0.50</td><td class="muted">CME</td></tr>
+        <tr><td>MES</td><td class="muted">Micro E-mini S&P</td><td>0.25 pts</td><td class="accent">$1.25</td><td class="muted">CME</td></tr>
+        <tr><td>M2K</td><td class="muted">Micro Russell 2000</td><td>0.10 pts</td><td class="accent">$0.50</td><td class="muted">CME</td></tr>
+        <tr><td>MGC</td><td class="muted">Micro Gold</td><td>0.10 pts</td><td class="accent">$1.00</td><td class="muted">COMEX</td></tr>
+        <tr><td>MCL</td><td class="muted">Micro Crude Oil</td><td>0.01 pts</td><td class="accent">$1.00</td><td class="muted">NYMEX</td></tr>
+        <tr><td>MYM</td><td class="muted">Micro Dow Jones</td><td>1 pt</td><td class="accent">$0.50</td><td class="muted">CBOT</td></tr>
+        <tr><td>MBT</td><td class="muted">Micro Bitcoin</td><td>5 pts</td><td class="accent">$2.50</td><td class="muted">CME</td></tr>
+        <tr><td>MSI</td><td class="muted">Micro Silver</td><td>0.005 pts</td><td class="accent">$2.50</td><td class="muted">COMEX</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--muted);">Pro unlocks 20 full-size instruments. All values are official CME Group contract specifications — verify with your broker before trading.</p>
   </div>
-
 </main>
 
-<!-- ── FOOTER ── -->
 <footer>
-  <p>SizeRight — free futures position size calculator</p>
-  <p>Not financial advice. Verify contract specs with your broker.</p>
+  <p>© 2025 SizeRight · siderightapps.com</p>
+  <p>Not financial advice · Verify specs with your broker</p>
 </footer>
 
-<!-- ── PRO MODAL ── -->
+<!-- TICK INFO MODAL -->
+<div class="modal-backdrop" id="tickModal">
+  <div class="modal-box tick">
+    <h3>What is a tick?</h3>
+    <p>A <span class="hl">tick</span> is the smallest possible price movement for a futures contract. Every instrument has a fixed tick size and a fixed dollar value per tick — set by the exchange and never change with price.</p>
+    <p>Example: MNQ moves in 0.25-point increments. Each move = <span class="hl">$0.50</span>. A 10-tick stop costs <span class="hl">$5 per contract</span>.</p>
+    <table class="tick-table">
+      <thead><tr><th>Contract</th><th>Tick size</th><th>$ per tick</th></tr></thead>
+      <tbody>
+        <tr><td>MNQ</td><td>0.25 pts</td><td class="accent">$0.50</td></tr>
+        <tr><td>MES</td><td>0.25 pts</td><td class="accent">$1.25</td></tr>
+        <tr><td>M2K</td><td>0.10 pts</td><td class="accent">$0.50</td></tr>
+        <tr><td>MGC</td><td>0.10 pts</td><td class="accent">$1.00</td></tr>
+        <tr><td>MCL</td><td>0.01 pts</td><td class="accent">$1.00</td></tr>
+        <tr><td>MYM</td><td>1 pt</td><td class="accent">$0.50</td></tr>
+        <tr><td>MBT</td><td>5 pts</td><td class="accent">$2.50</td></tr>
+        <tr><td>MSI</td><td>0.005 pts</td><td class="accent">$2.50</td></tr>
+      </tbody>
+    </table>
+    <p class="modal-note">Official CME Group specifications. Always verify with your broker before trading.</p>
+    <button class="modal-close-btn" id="tickModalClose">Got it</button>
+  </div>
+</div>
+
+<!-- PRO MODAL -->
 <div class="modal-backdrop" id="proModal">
-  <div class="modal">
-    <h2>Unlock Pro instruments</h2>
-    <p>A single, one-time payment. No subscription ever. The key is delivered instantly via Gumroad.</p>
+  <div class="modal-box pro">
+    <h2>Unlock Pro — 20 instruments</h2>
+    <p>One-time payment. No subscription, ever. Key delivered instantly via Gumroad.</p>
     <ul class="modal-features">
-      <li>Euro FX, T-Bond, 10-Year Note</li>
-      <li>Silver, Copper, Natural Gas</li>
-      <li>Corn, Wheat, Bitcoin futures</li>
-      <li>YM (Dow), RTY (Russell 2000)</li>
-      <li>Custom contract builder</li>
+      <li>NQ, ES, RTY, GC, CL — full-size contracts</li>
+      <li>YM (Dow), BTC (Bitcoin), SI (Silver)</li>
+      <li>6E (Euro), 6B (GBP), 6J (Yen)</li>
+      <li>ZB, ZN, ZF — full Treasury curve</li>
+      <li>HG, NG, ZC, ZW, ZS, PA — commodities</li>
     </ul>
     <div class="modal-price">$9</div>
     <p class="modal-price-note">One-time · Instant unlock · Works in your browser</p>
@@ -728,182 +360,168 @@
       <div>
         <p style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:6px;">Already bought? Enter your key:</p>
         <div class="unlock-row">
-          <input class="unlock-input" id="licenseInput" type="text" placeholder="XXXX-XXXX-XXXX-XXXX">
+          <input class="unlock-input" id="licenseInput" type="text" placeholder="SIZERIGHT-PRO-XXXX">
           <button class="btn-unlock" id="unlockBtn">Activate</button>
         </div>
         <p class="unlock-msg" id="unlockMsg"></p>
       </div>
     </div>
-    <button class="modal-close" id="modalClose">✕ Close</button>
+    <button class="modal-dismiss" id="modalClose">✕ Close</button>
   </div>
 </div>
 
 <script>
-// ── INSTRUMENT DATA ──
 const FREE_INSTRUMENTS = [
-  { id:'NQ',  name:'NQ',  full:'E-mini Nasdaq-100', tickSize:0.25, tickValue:5,    pointValue:20,  exchange:'CME' },
-  { id:'ES',  name:'ES',  full:'E-mini S&P 500',    tickSize:0.25, tickValue:12.5, pointValue:50,  exchange:'CME' },
-  { id:'MNQ', name:'MNQ', full:'Micro Nasdaq-100',  tickSize:0.25, tickValue:0.5,  pointValue:2,   exchange:'CME' },
-  { id:'MES', name:'MES', full:'Micro E-mini S&P',  tickSize:0.25, tickValue:1.25, pointValue:5,   exchange:'CME' },
-  { id:'GC',  name:'GC',  full:'Gold',              tickSize:0.10, tickValue:10,   pointValue:100, exchange:'CME/COMEX' },
-  { id:'CL',  name:'CL',  full:'Crude Oil (WTI)',   tickSize:0.01, tickValue:10,   pointValue:1000,exchange:'CME/NYMEX'},
+  {id:'MNQ',name:'MNQ',full:'Micro Nasdaq-100',      tickSize:0.25,    tickValue:0.5,   pointValue:2,       exchange:'CME'},
+  {id:'MES',name:'MES',full:'Micro E-mini S&P 500',  tickSize:0.25,    tickValue:1.25,  pointValue:5,       exchange:'CME'},
+  {id:'M2K',name:'M2K',full:'Micro Russell 2000',    tickSize:0.1,     tickValue:0.5,   pointValue:5,       exchange:'CME'},
+  {id:'MGC',name:'MGC',full:'Micro Gold',            tickSize:0.10,    tickValue:1,     pointValue:10,      exchange:'COMEX'},
+  {id:'MCL',name:'MCL',full:'Micro Crude Oil',       tickSize:0.01,    tickValue:1,     pointValue:100,     exchange:'NYMEX'},
+  {id:'MYM',name:'MYM',full:'Micro Dow Jones',       tickSize:1,       tickValue:0.5,   pointValue:0.5,     exchange:'CBOT'},
+  {id:'MBT',name:'MBT',full:'Micro Bitcoin',         tickSize:5,       tickValue:2.5,   pointValue:0.5,     exchange:'CME'},
+  {id:'MSI',name:'MSI',full:'Micro Silver',          tickSize:0.005,   tickValue:2.5,   pointValue:500,     exchange:'COMEX'},
 ];
-
 const PRO_INSTRUMENTS = [
-  { id:'6E',  name:'6E',  full:'Euro FX',           tickSize:0.00005,tickValue:6.25, pointValue:125000,exchange:'CME' },
-  { id:'ZB',  name:'ZB',  full:'30-Yr T-Bond',      tickSize:0.03125,tickValue:31.25,pointValue:1000, exchange:'CBOT' },
-  { id:'ZN',  name:'ZN',  full:'10-Yr T-Note',      tickSize:0.015625,tickValue:15.625,pointValue:1000,exchange:'CBOT'},
-  { id:'SI',  name:'SI',  full:'Silver',            tickSize:0.005, tickValue:25,   pointValue:5000, exchange:'CME/COMEX'},
-  { id:'HG',  name:'HG',  full:'Copper',            tickSize:0.0005,tickValue:12.5, pointValue:25000,exchange:'CME/COMEX'},
-  { id:'NG',  name:'NG',  full:'Natural Gas',       tickSize:0.001, tickValue:10,   pointValue:10000,exchange:'CME/NYMEX'},
-  { id:'ZC',  name:'ZC',  full:'Corn',              tickSize:0.25,  tickValue:12.5, pointValue:50,   exchange:'CBOT'},
-  { id:'ZW',  name:'ZW',  full:'Wheat',             tickSize:0.25,  tickValue:12.5, pointValue:50,   exchange:'CBOT'},
-  { id:'BTC', name:'BTC', full:'Bitcoin Futures',   tickSize:5,     tickValue:25,   pointValue:5,    exchange:'CME'},
-  { id:'RTY', name:'RTY', full:'Russell 2000',      tickSize:0.1,   tickValue:5,    pointValue:50,   exchange:'CME'},
-  { id:'YM',  name:'YM',  full:'Dow Futures',       tickSize:1,     tickValue:5,    pointValue:5,    exchange:'CBOT'},
+  {id:'NQ', name:'NQ', full:'E-mini Nasdaq-100',     tickSize:0.25,    tickValue:5,     pointValue:20,      exchange:'CME'},
+  {id:'ES', name:'ES', full:'E-mini S&P 500',        tickSize:0.25,    tickValue:12.5,  pointValue:50,      exchange:'CME'},
+  {id:'RTY',name:'RTY',full:'Russell 2000',          tickSize:0.1,     tickValue:5,     pointValue:50,      exchange:'CME'},
+  {id:'GC', name:'GC', full:'Gold',                  tickSize:0.10,    tickValue:10,    pointValue:100,     exchange:'COMEX'},
+  {id:'CL', name:'CL', full:'Crude Oil (WTI)',       tickSize:0.01,    tickValue:10,    pointValue:1000,    exchange:'NYMEX'},
+  {id:'YM', name:'YM', full:'Dow Jones',             tickSize:1,       tickValue:5,     pointValue:5,       exchange:'CBOT'},
+  {id:'BTC',name:'BTC',full:'Bitcoin Futures',       tickSize:5,       tickValue:25,    pointValue:5,       exchange:'CME'},
+  {id:'SI', name:'SI', full:'Silver',                tickSize:0.005,   tickValue:25,    pointValue:5000,    exchange:'COMEX'},
+  {id:'6E', name:'6E', full:'Euro FX',               tickSize:0.00005, tickValue:6.25,  pointValue:125000,  exchange:'CME'},
+  {id:'6B', name:'6B', full:'British Pound',         tickSize:0.0001,  tickValue:6.25,  pointValue:62500,   exchange:'CME'},
+  {id:'6J', name:'6J', full:'Japanese Yen',          tickSize:0.0000005,tickValue:6.25, pointValue:12500000,exchange:'CME'},
+  {id:'ZB', name:'ZB', full:'30-Yr T-Bond',          tickSize:0.03125, tickValue:31.25, pointValue:1000,    exchange:'CBOT'},
+  {id:'ZN', name:'ZN', full:'10-Yr T-Note',          tickSize:0.015625,tickValue:15.625,pointValue:1000,    exchange:'CBOT'},
+  {id:'ZF', name:'ZF', full:'5-Yr T-Note',           tickSize:0.0078125,tickValue:7.8125,pointValue:1000,   exchange:'CBOT'},
+  {id:'HG', name:'HG', full:'Copper',                tickSize:0.0005,  tickValue:12.5,  pointValue:25000,   exchange:'COMEX'},
+  {id:'NG', name:'NG', full:'Natural Gas',           tickSize:0.001,   tickValue:10,    pointValue:10000,   exchange:'NYMEX'},
+  {id:'ZC', name:'ZC', full:'Corn',                  tickSize:0.25,    tickValue:12.5,  pointValue:50,      exchange:'CBOT'},
+  {id:'ZW', name:'ZW', full:'Wheat',                 tickSize:0.25,    tickValue:12.5,  pointValue:50,      exchange:'CBOT'},
+  {id:'ZS', name:'ZS', full:'Soybeans',              tickSize:0.25,    tickValue:12.5,  pointValue:50,      exchange:'CBOT'},
+  {id:'PA', name:'PA', full:'Palladium',             tickSize:0.05,    tickValue:5,     pointValue:100,     exchange:'NYMEX'},
 ];
-
-// Pro license key — change this to a real secret string you put in your Gumroad delivery
-// For a simple solo product, just pick a hard-coded key and deliver it via Gumroad
-const VALID_KEYS = ['SIZERIGHT-PRO-2024', 'SIZER-ALPHA-KEY1']; // add your keys here
+const VALID_KEYS = ['SIZERIGHT-PRO-2024','SIZER-ALPHA-KEY1'];
 
 let isPro = localStorage.getItem('sizeright_pro') === '1';
-let selectedId = 'NQ';
+let selectedId = 'MNQ';
 
-function fmt(n) {
-  if (n >= 1000) return '$' + n.toLocaleString();
-  if (n < 0.01) return '$' + n.toFixed(5);
-  if (n < 1) return '$' + n.toFixed(4);
-  return '$' + n.toFixed(2);
+function fmt(n){
+  if(n>=1000) return '$'+n.toLocaleString('en-US',{maximumFractionDigits:0});
+  if(n<0.01) return '$'+n.toFixed(5);
+  if(n<1) return '$'+n.toFixed(4);
+  return '$'+n.toFixed(2);
 }
 
-function buildTabs() {
-  const container = document.getElementById('tabs');
-  container.innerHTML = '';
-  const all = isPro ? [...FREE_INSTRUMENTS, ...PRO_INSTRUMENTS] : [...FREE_INSTRUMENTS, ...PRO_INSTRUMENTS];
-  all.forEach(inst => {
+function getInstrument(){ return [...FREE_INSTRUMENTS,...PRO_INSTRUMENTS].find(i=>i.id===selectedId); }
+
+function buildTabs(){
+  const ft = document.getElementById('freeTabs');
+  const pt = document.getElementById('proTabs');
+  ft.innerHTML = ''; pt.innerHTML = '';
+  FREE_INSTRUMENTS.forEach(inst=>{
     const btn = document.createElement('button');
-    btn.className = 'tab' + (inst.id === selectedId ? ' active' : '') + (!isPro && PRO_INSTRUMENTS.find(p => p.id === inst.id) ? ' pro-locked' : '');
+    btn.className = 'tab'+(inst.id===selectedId?' active':'');
     btn.textContent = inst.name;
-    if (!isPro && PRO_INSTRUMENTS.find(p => p.id === inst.id)) {
-      btn.title = 'Pro instrument — unlock for $9';
-      btn.addEventListener('click', () => openModal());
-    } else {
-      btn.addEventListener('click', () => { selectedId = inst.id; buildTabs(); updateInfo(); calculate(); });
-    }
-    container.appendChild(btn);
+    btn.addEventListener('click',()=>{ selectedId=inst.id; buildTabs(); updateInfo(); calculate(); });
+    ft.appendChild(btn);
+  });
+  PRO_INSTRUMENTS.forEach(inst=>{
+    const btn = document.createElement('button');
+    btn.className = 'tab'+(inst.id===selectedId?' active':'')+(isPro?'':' pro-locked');
+    btn.textContent = inst.name;
+    btn.addEventListener('click',()=>{ if(!isPro){openProModal();return;} selectedId=inst.id; buildTabs(); updateInfo(); calculate(); });
+    pt.appendChild(btn);
   });
 }
 
-function getInstrument() {
-  return [...FREE_INSTRUMENTS, ...PRO_INSTRUMENTS].find(i => i.id === selectedId);
-}
-
-function updateInfo() {
+function updateInfo(){
   const inst = getInstrument();
-  document.getElementById('instrInfo').innerHTML = `
+  document.getElementById('instrInfo').innerHTML=`
     <div class="info-item"><span class="info-key">Instrument</span><span class="info-val">${inst.full}</span></div>
     <div class="info-item"><span class="info-key">Exchange</span><span class="info-val">${inst.exchange}</span></div>
     <div class="info-item"><span class="info-key">Tick size</span><span class="info-val accent">${inst.tickSize}</span></div>
     <div class="info-item"><span class="info-key">Tick value</span><span class="info-val accent">${fmt(inst.tickValue)}</span></div>
-    <div class="info-item"><span class="info-key">Point value</span><span class="info-val">${fmt(inst.pointValue)}</span></div>
-  `;
-  document.getElementById('stopLabel').textContent = `Stop distance (ticks)`;
+    <div class="info-item"><span class="info-key">Point value</span><span class="info-val">${fmt(inst.pointValue)}</span></div>`;
 }
 
-function calculate() {
+function calculate(){
   const inst = getInstrument();
-  const account = parseFloat(document.getElementById('accountSize').value) || 0;
-  const riskPct = parseFloat(document.getElementById('riskPct').value) || 0;
-  const stopTicksInput = document.getElementById('stopTicks');
-  const stopPointsInput = document.getElementById('stopPoints');
+  const account = parseFloat(document.getElementById('accountSize').value)||0;
+  const riskPct = parseFloat(document.getElementById('riskPct').value)||0;
+  const stopTicks = parseFloat(document.getElementById('stopTicks').value)||0;
+  const dollarRisk = account*(riskPct/100);
+  const stopCost = stopTicks*inst.tickValue;
+  const contracts = stopCost>0 ? Math.floor(dollarRisk/stopCost) : 0;
+  const stopPoints = stopTicks*inst.tickSize;
+  const dec = inst.tickSize<0.0001?7:inst.tickSize<0.001?5:inst.tickSize<0.1?4:2;
 
-  let stopTicks = parseFloat(stopTicksInput.value) || 0;
-  // If points field has a value, use that to derive ticks
-  if (document.activeElement === stopPointsInput && stopPointsInput.value) {
-    const pts = parseFloat(stopPointsInput.value);
-    stopTicks = Math.round(pts / inst.tickSize);
-    stopTicksInput.value = stopTicks;
-  } else if (stopTicks > 0) {
-    stopPointsInput.value = (stopTicks * inst.tickSize).toFixed(inst.tickSize < 0.01 ? 5 : inst.tickSize < 1 ? 4 : 2);
-  }
+  document.getElementById('stopHint').textContent = stopTicks>0
+    ? `= ${stopPoints.toFixed(dec)} points · ${fmt(stopCost)} per contract` : '';
 
-  const dollarRisk = account * (riskPct / 100);
-  const stopCostPerContract = stopTicks * inst.tickValue;
-  const contracts = stopCostPerContract > 0 ? Math.floor(dollarRisk / stopCostPerContract) : 0;
-  const maxContracts = stopCostPerContract > 0 ? Math.floor(account / (stopCostPerContract * 5)) : 0; // rough margin proxy
+  const card=document.getElementById('resultCard');
+  const num=document.getElementById('resultContracts');
+  const warn=document.getElementById('warningText');
+  num.textContent = contracts>0?contracts:'0';
+  document.getElementById('resultUnit').textContent = contracts===1?'contract':'contracts';
 
-  const resultCard = document.getElementById('resultCard');
-  const resultNum = document.getElementById('resultContracts');
-  const warning = document.getElementById('warningText');
-
-  resultNum.textContent = contracts > 0 ? contracts : '0';
-
-  if (contracts === 0 && account > 0 && stopTicks > 0) {
-    resultCard.className = 'result-card danger';
-    resultNum.className = 'result-number danger';
-    warning.textContent = '⚠ Stop too wide or risk too small — 0 contracts. Increase risk % or tighten stop.';
-    warning.className = 'warning-text show';
-  } else if (riskPct > 3) {
-    resultCard.className = 'result-card danger';
-    resultNum.className = 'result-number';
-    warning.textContent = '⚠ Risk above 3% per trade is considered high — proceed with caution.';
-    warning.className = 'warning-text show';
+  if(contracts===0&&account>0&&stopTicks>0){
+    card.className='result-card danger'; num.className='result-number danger';
+    warn.textContent='⚠ Stop too wide for this risk — 0 contracts. Widen your risk % or tighten stop.';
+    warn.className='warning-text show';
+  } else if(riskPct>3){
+    card.className='result-card danger'; num.className='result-number';
+    warn.textContent='⚠ Risk above 3% per trade is considered high — proceed with caution.';
+    warn.className='warning-text show';
   } else {
-    resultCard.className = 'result-card' + (contracts > 0 ? ' valid' : '');
-    resultNum.className = 'result-number';
-    warning.className = 'warning-text';
+    card.className='result-card'+(contracts>0?' valid':'');
+    num.className='result-number'; warn.className='warning-text';
   }
 
-  document.getElementById('statRisk').textContent = dollarRisk > 0 ? '$' + dollarRisk.toLocaleString(undefined, {minimumFractionDigits:0,maximumFractionDigits:0}) : '—';
+  document.getElementById('statRisk').textContent = dollarRisk>0?'$'+dollarRisk.toLocaleString('en-US',{maximumFractionDigits:0}):'—';
   document.getElementById('statTickVal').textContent = fmt(inst.tickValue);
-  document.getElementById('statStopDollar').textContent = stopCostPerContract > 0 ? fmt(stopCostPerContract) + ' / contract' : '—';
-  document.getElementById('statMax').textContent = maxContracts > 0 ? maxContracts + ' (est.)' : '—';
+  document.getElementById('statStopDollar').textContent = stopCost>0?fmt(stopCost)+' / contract':'—';
+  document.getElementById('statStopPts').textContent = stopTicks>0?stopPoints.toFixed(dec)+' pts':'—';
   document.getElementById('statTick').textContent = inst.tickSize;
   document.getElementById('statPoint').textContent = fmt(inst.pointValue);
-  document.getElementById('resultUnit').textContent = contracts === 1 ? 'contract' : 'contracts';
 }
 
-// ── MODAL ──
-function openModal() {
-  document.getElementById('proModal').classList.add('open');
-}
-function closeModal() {
-  document.getElementById('proModal').classList.remove('open');
-}
+function openProModal(){ document.getElementById('proModal').classList.add('open'); }
 
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('proModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-document.getElementById('headerProBtn').addEventListener('click', e => { e.preventDefault(); openModal(); });
+document.getElementById('tickInfoBtn').addEventListener('click',()=>document.getElementById('tickModal').classList.add('open'));
+document.getElementById('tickModalClose').addEventListener('click',()=>document.getElementById('tickModal').classList.remove('open'));
+document.getElementById('tickModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) e.currentTarget.classList.remove('open'); });
+document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('proModal').classList.remove('open'));
+document.getElementById('proModal').addEventListener('click',e=>{ if(e.target===e.currentTarget) e.currentTarget.classList.remove('open'); });
+document.getElementById('headerProBtn').addEventListener('click',e=>{ e.preventDefault(); openProModal(); });
 
-document.getElementById('unlockBtn').addEventListener('click', () => {
-  const key = document.getElementById('licenseInput').value.trim().toUpperCase();
-  const msg = document.getElementById('unlockMsg');
-  if (VALID_KEYS.includes(key)) {
-    localStorage.setItem('sizeright_pro', '1');
-    isPro = true;
-    msg.textContent = '✓ Pro unlocked! All instruments available.';
-    msg.className = 'unlock-msg ok';
-    setTimeout(() => { closeModal(); buildTabs(); document.getElementById('proUpsell').style.display = 'none'; document.getElementById('headerProBtn').style.display = 'none'; }, 1200);
+document.getElementById('unlockBtn').addEventListener('click',()=>{
+  const key=document.getElementById('licenseInput').value.trim().toUpperCase();
+  const msg=document.getElementById('unlockMsg');
+  if(VALID_KEYS.includes(key)){
+    localStorage.setItem('sizeright_pro','1'); isPro=true;
+    msg.textContent='✓ Pro unlocked! All 20 instruments available.'; msg.className='unlock-msg ok';
+    setTimeout(()=>{
+      document.getElementById('proModal').classList.remove('open');
+      document.getElementById('proUpsell').style.display='none';
+      document.getElementById('headerProBtn').style.display='none';
+      buildTabs();
+    },1000);
   } else {
-    msg.textContent = 'Invalid key. Purchase via Gumroad to get a valid key.';
-    msg.className = 'unlock-msg';
+    msg.textContent='Invalid key. Purchase via Gumroad to get your key.';
+    msg.className='unlock-msg';
   }
 });
 
-// ── EVENT LISTENERS ──
-['accountSize','riskPct','stopTicks','stopPoints'].forEach(id => {
-  document.getElementById(id).addEventListener('input', calculate);
-});
+['accountSize','riskPct','stopTicks'].forEach(id=>document.getElementById(id).addEventListener('input',calculate));
 
-// ── INIT ──
-if (isPro) {
-  document.getElementById('proUpsell').style.display = 'none';
-  document.getElementById('headerProBtn').style.display = 'none';
+if(isPro){
+  document.getElementById('proUpsell').style.display='none';
+  document.getElementById('headerProBtn').style.display='none';
 }
-buildTabs();
-updateInfo();
-calculate();
+buildTabs(); updateInfo(); calculate();
 </script>
 </body>
 </html>
