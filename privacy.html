@@ -1,28 +1,279 @@
-SizeRight Privacy Policy
-Last updated: April 2026
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — SizeRight</title>
+  <style>
+    :root {
+      --bg:      #0d0d0d;
+      --surface: #141414;
+      --border:  rgba(255,255,255,0.08);
+      --border2: rgba(255,255,255,0.14);
+      --text:    #f0ede8;
+      --muted:   #888888;
+      --accent:  #c8f03a;
+      --red:     #ff5a3c;
+    }
 
-SizeRight ("the app") is operated by SideRight Apps.
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-DATA WE COLLECT
-SizeRight does not collect, store, or transmit any personal data. 
-All calculations are performed locally on your device.
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 0 0 64px;
+    }
 
-The app uses your device's local storage solely to remember whether 
-you have unlocked the Pro version. This data never leaves your device.
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 24px 24px 20px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
-When you purchase Pro, your license key is verified against Gumroad's 
-API. We do not store your key or any purchase information on our servers.
+    .logo {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+    }
 
-THIRD PARTY SERVICES
-- Google AdMob (mobile): may collect device identifiers for advertising.
-  See Google's privacy policy: policies.google.com/privacy
-- Google AdSense (web): may set cookies for advertising purposes.
-  See Google's privacy policy: policies.google.com/privacy
-- Gumroad: handles payments and license verification.
-  See Gumroad's privacy policy: gumroad.com/privacy
+    .logo span {
+      display: block;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 1.2px;
+      font-family: monospace;
+      margin-top: 2px;
+    }
 
-CONTACT
-For privacy questions contact: siderightapps@gmail.com
-```
+    .updated {
+      font-size: 11px;
+      color: var(--muted);
+      font-family: monospace;
+      letter-spacing: 0.5px;
+    }
 
----
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 24px 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.3px;
+    }
+
+    .intro {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section {
+      margin-bottom: 36px;
+    }
+
+    h2 {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 1.2px;
+      font-family: monospace;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 14px;
+      color: #c8c4be;
+      line-height: 1.75;
+      margin-bottom: 12px;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    .highlight-box {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 12px;
+    }
+
+    .highlight-box p {
+      color: var(--text);
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border2);
+    }
+
+    th {
+      text-align: left;
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.8px;
+      font-family: monospace;
+      text-transform: uppercase;
+      padding: 0 12px 10px 0;
+      font-weight: 500;
+    }
+
+    td {
+      padding: 10px 12px 10px 0;
+      color: #c8c4be;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    td:first-child {
+      color: var(--text);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .contact-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .contact-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.8px;
+      font-family: monospace;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .contact-email {
+      font-size: 14px;
+      color: var(--accent);
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 22px; }
+      main { padding: 28px 16px 0; }
+      header { padding: 20px 16px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">
+      SizeRight
+      <span>FUTURES POSITION CALCULATOR</span>
+    </a>
+    <span class="updated">Last updated: April 2026</span>
+  </header>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="intro">
+      SizeRight ("the app") is operated by SideRight Apps. This policy explains what data we collect, how it's used, and your rights.
+    </p>
+
+    <section>
+      <h2>Data We Collect</h2>
+      <div class="highlight-box">
+        <p>SizeRight does not collect, store, or transmit any personal data. All calculations are performed locally on your device.</p>
+      </div>
+      <p>
+        The app uses your device's local storage solely to remember whether you have unlocked the Pro version. This data never leaves your device.
+      </p>
+    </section>
+
+    <section>
+      <h2>Pro Unlock</h2>
+      <p>
+        When you purchase Pro, your license key is verified against Gumroad's API (Android/Web) or Apple's in-app purchase system (iOS). We do not store your key or any purchase information on our servers.
+      </p>
+    </section>
+
+    <section>
+      <h2>Third-Party Services</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Purpose</th>
+            <th>Privacy Policy</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Google AdMob</td>
+            <td>Mobile advertising. May collect device identifiers for ad personalisation.</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
+          </tr>
+          <tr>
+            <td>Google AdSense</td>
+            <td>Web advertising. May set cookies for advertising purposes.</td>
+            <td><a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></td>
+          </tr>
+          <tr>
+            <td>Gumroad</td>
+            <td>Payment processing and license key verification (Android/Web only).</td>
+            <td><a href="https://gumroad.com/privacy" target="_blank">gumroad.com/privacy</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <div class="contact-box">
+        <span class="contact-icon">✉️</span>
+        <div>
+          <div class="contact-label">Privacy questions</div>
+          <a href="mailto:siderightapps@gmail.com" class="contact-email">siderightapps@gmail.com</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</body>
+</html>
